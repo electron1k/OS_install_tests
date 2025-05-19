@@ -1,5 +1,9 @@
 # /iso/onyx3-testing-disk1.iso
-# /machine
+#/machine
 /temp2.jpg
 /venv
 /waste.py
+machine/OSnova/OSnova.vbox-prev
+machine/OSnova/OSnova.vbox
+machine/osnova_test.vdi
+iso/onyx3-testing-disk1.iso

@@ -12,12 +12,12 @@ test_result = []
 script_path = path_for_save = pathlib.Path().resolve() # maybe don't need
 
 def test_create_and_run_vm():
-    # proc = subprocess.call('./create_vm.sh',  shell=True)
+    proc = subprocess.call('./create_vm.sh',  shell=True)
     print("machine created")
-    start_vm = subprocess.call(['VBoxManage', 'startvm', 'OSnova'])
+    # start_vm = subprocess.call(['VBoxManage', 'startvm', 'OSnova'])
     # result = subprocess.check_output(['VBoxManage', 'list', 'runningvms'], shell=False, stdout=subprocess.PIPE)
-    result = subprocess.check_output(['VBoxManage', 'list', 'runningvms'], shell=False)
-    print(result)
+    # result = subprocess.check_output(['VBoxManage', 'list', 'runningvms'], shell=False)
+    # print(result)
     # assert result == 0
 
 # def capture_image():
@@ -103,8 +103,8 @@ def goto_next_screen():
 if __name__ == "__main__":
 
     test_create_and_run_vm()
-    asyncio.run(test_screen('reference_img/start_menu.png'))
-    goto_next_screen()
+    # asyncio.run(test_screen('reference_img/start_menu.png'))
+    # goto_next_screen()
     # print(asyncio.run(finder('reference_img/logo_st_sc.png')))
     print(test_result)
 
