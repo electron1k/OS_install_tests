@@ -3,7 +3,6 @@ path=`pwd`
 
 echo $path
 # set folder for machine
-# VBoxManage setproperty machinefolder /media/data/autoinstall_tests/machine 
 VBoxManage setproperty machinefolder ${path}/machine
 
 
@@ -24,5 +23,5 @@ VBoxManage storageattach "OSnova" --storagectl "SATA" --port 0 --device 0 --type
 VBoxManage storageattach "OSnova" --storagectl "IDE" --port 1 --device 0 --type dvddrive --medium "iso/onyx3-testing-disk1.iso"
 
 # setting hardware parameters
-VBoxManage modifyvm "OSnova" --memory 4096 --vram 128 --cpus 4 --nic1 Bridged
+VBoxManage modifyvm "OSnova" --memory 4096 --vram 128 --cpus 4 #--nic1 Bridged
 
