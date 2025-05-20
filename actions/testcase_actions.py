@@ -1,10 +1,9 @@
 import pyautogui
 import time
-import subprocess
+import pywinctl
+from PIL import Image, ImageGrab, ImageChops
+import asyncio
 
-
-
-#Actions in test-case
 
 def goto_next_screen(tabs: int):
     for _ in range(tabs):
@@ -45,22 +44,36 @@ def locate_default_elements():
         return True
     else: 
         return False
+    
 
-#Actions with machine
+async def test_screen(r_image: str):
+    img_name = (r_image.split('/'))[-1]
+    window = pywinctl.getActiveWindow()
+    # pyautogui.moveTo(x=int(window.left)+50, y=int(window.top)+50)
+    # pyautogui.click()
+    # window.maximize()
+    print(window)
+    a = await finder(r_image)              # need normal name
 
-def check_machine(machine_name):
-    proc = subprocess.check_output(['VBoxManage', 'list', 'vms'], text=True)
-    # print(proc)
-    if machine_name in proc:
-        return True
-    else:
-        return False
+    sc = ImageGrab.grab()
+    sc.save(f'results/img/{img_name}')
+    # sc = ImageGrab.grab(bbox=(int(window.left), int(window.top), int(window.width), int(window.height)))
+    sc = ImageGrab.grab(bbox=(0, 0, 800, 600))
 
-# check_machine()
-# tabs = 2
-# for _ in range(tabs):
-#     print('ok')
-
-# while True:
-#     pyautogui.screenshot()
-#     time.sleep(5)
+    sc.save('temp2.jpg')
+    # test_result.append(f'{img_name} - ok')
+    # print(start_menu)
+    # subprocess.call(['VBoxManage', 'controlvm', 'OSnova', 'poweroff'])
+    return a
+    
+async def finder(r_image: str):
+    print('start find image')
+    flag = True
+    while flag:
+        try:
+            start_menu = pyautogui.locateOnScreen(r_image) # 'reference_img/start_menu.png'
+            print(start_menu)
+            flag = False
+            return start_menu
+        except pyautogui.ImageNotFoundException:
+            continue
