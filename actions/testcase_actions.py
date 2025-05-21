@@ -30,7 +30,8 @@ def fill_many(elem, text):
 def locate_element(element_src: str):
     try:
         element = pyautogui.locateOnScreen(element_src)
-        return element
+        # return element
+        return 'found'
     except pyautogui.ImageNotFoundException:
         return False
 
@@ -46,7 +47,7 @@ def locate_default_elements():
         return False
     
 
-async def test_screen(r_image: str):
+async def test_screen(r_image: str, sc_name):
     img_name = (r_image.split('/'))[-1]
     window = pywinctl.getActiveWindow()
     # pyautogui.moveTo(x=int(window.left)+50, y=int(window.top)+50)
@@ -55,10 +56,14 @@ async def test_screen(r_image: str):
     print(window)
     a = await finder(r_image)              # need normal name
 
-    sc = ImageGrab.grab()
-    sc.save(f'results/img/{img_name}')
-    # sc = ImageGrab.grab(bbox=(int(window.left), int(window.top), int(window.width), int(window.height)))
-    sc = ImageGrab.grab(bbox=(0, 0, 800, 600))
+    sc = ImageGrab.grab(bbox=(int(window.left), int(window.top), int(window.left) + int(window.width), int(window.top) + int(window.height)))
+    sc.save(f'results/img/{sc_name}.png')
+    # print(int(window.left), int(window.top), int(window.width), int(window.height))
+    # sc = ImageGrab.grab(bbox=(int(window.left), int(window.top), int(window.left) + int(window.width), int(window.top) + int(window.height)))
+    # sc = ImageGrab.grab(bbox=(int(window.left), int(window.top), 100, 100))
+
+    
+    # sc = ImageGrab.grab(bbox=(0, 0, 800, 600))
 
     sc.save('temp2.jpg')
     # test_result.append(f'{img_name} - ok')
@@ -77,3 +82,21 @@ async def finder(r_image: str):
             return start_menu
         except pyautogui.ImageNotFoundException:
             continue
+
+
+
+def case_result(elems, flag, test):
+
+    if 'False' not in elems and flag == False:
+        print(f'{test} - passed')
+        return [True, 'Passed']
+    
+    elif flag == False:
+        print(f'{test} - not passed')
+        print(f'Elements {elems}')
+        return [True, 'Not passed', f'Elements {elems}']
+
+    else:
+        print(f'{test} - Blocked')
+        print(f'Warning {flag}')
+        return [False, 'Blocked', f'Warning {flag}']
