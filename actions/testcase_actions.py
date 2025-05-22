@@ -11,6 +11,7 @@ def goto_next_screen(tabs: int):
     time.sleep(0.5)
     pyautogui.press('Enter')
 
+
 def fill_field(elem, text):
     pyautogui.click(x=(int(elem.left) + 100), y=(int(elem.top) + 100), button='left')
     pyautogui.write(text)
@@ -28,21 +29,32 @@ def fill_many(elem, text):
     time.sleep(1)
 
 def locate_element(element_src: str):
+    result = {'sname': element_src.split('/')[-1],
+              'slink': element_src,
+              'state': ''}
     try:
         element = pyautogui.locateOnScreen(element_src)
         # return element
-        return 'found'
+        result['state'] = 'Found'
     except pyautogui.ImageNotFoundException:
-        return False
+        result['state'] = 'No'
+        # return False
+    finally:
+        return result
+
+
+
 
 def locate_default_elements():
     def_elems = []
     def_elems.append(locate_element('reference_img/elems/installer_logo.png'))
     def_elems.append(locate_element('reference_img/elems/btn_screen.png'))
     def_elems.append(locate_element('reference_img/elems/btn_continue.png'))
+    print(def_elems)
 
-    if 'False' not in def_elems:
-        return True
+    if 'No' not in def_elems:
+        # return True
+        return 'found'
     else: 
         return False
     
@@ -65,7 +77,7 @@ async def test_screen(r_image: str, sc_name):
     
     # sc = ImageGrab.grab(bbox=(0, 0, 800, 600))
 
-    sc.save('temp2.jpg')
+    #sc.save('temp2.jpg')
     # test_result.append(f'{img_name} - ok')
     # print(start_menu)
     # subprocess.call(['VBoxManage', 'controlvm', 'OSnova', 'poweroff'])
@@ -86,17 +98,36 @@ async def finder(r_image: str):
 
 
 def case_result(elems, flag, test):
+    print(f'CASE RESULT DATA {elems}----{flag}-----{test}')
+    # [{'sname': 'installer_logo.png', 'slink': 'reference_img/elems/installer_logo.png', 'state': 'No'}, 
+    #  {'sname': 'btn_screen.png', 'slink': 'reference_img/elems/btn_screen.png', 'state': 'No'},
+    #   {'sname': 'btn_continue.png', 'slink': 'reference_img/elems/btn_continue.png', 'state': 'No'}]
+    # {'sname': 'warning.png', 'slink': 'reference_img/elems/warning.png', 'state': 'No'}
+    # Стартовый_экран  -----test
+    data = dict()
+    for item in elems:
 
-    if 'False' not in elems and flag == False:
-        print(f'{test} - passed')
-        return [True, 'Passed']
+        data.update({item['sname']: item['state']})
+        
+        return 
+
+    # CASE RESULT DATA [False, 'found']
+
+    # if 'False' not in elems and flag == 'No':
+    #     print(f'{test} - passed')
+    #     return [True, 'Passed',f'{elems[0]}']
     
-    elif flag == False:
-        print(f'{test} - not passed')
-        print(f'Elements {elems}')
-        return [True, 'Not passed', f'Elements {elems}']
+    # elif flag == 'Found':
+    #     print(f'{test} - not passed')
+    #     print(f'Elements {elems}')
+    #     return [True, 'Not passed', f'Elements {elems}']
+    
+    # elif 'False' in elems:
+    #     print(f'{test} - not passed')
+    #     print(f'Elements {elems}')
+    #     return [True, 'Not passed', f'Elements {elems}']
 
-    else:
-        print(f'{test} - Blocked')
-        print(f'Warning {flag}')
-        return [False, 'Blocked', f'Warning {flag}']
+    # else:
+    #     print(f'{test} - Blocked')
+    #     print(f'Warning {flag}')
+    #     return [False, 'Blocked', f'Warning {flag}']

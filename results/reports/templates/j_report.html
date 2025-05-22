@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<h1>Tests</h1>
+<table class="customTable" border="'1">
+    <thead>
+    <tr>
+        <th>Название теста</th>
+        <th>Результат</th>
+        <th>Стандартные элементы</th>
+        <th>Скриншот</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for report in report_dicts %}
+    <tr>
+        <td>
+            {{ report.name }}
+        </td>
+        <td>
+            {{ report.status }}
+        </td>
+        <td>
+            {{ report.default }}
+        </td>
+        <td>
+            <img src={{ report.screen }} width="400" height="325">
+        </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
