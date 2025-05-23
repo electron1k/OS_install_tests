@@ -17,10 +17,10 @@ stamp = str(datetime.now()).translate(reps).split('.')[0]
 def move_cursor():
     window = pywinctl.getActiveWindow()
     pyautogui.moveTo(x=int(window.left)+50, y=int(window.top)+50)
-    pyautogui.click()
+    pyautogui.click(button='left')
     print('cursor_pos ', pyautogui.position())
     # window.maximize()
-    print(window)
+    # print(window)
 
 def create_report_file():
     with open('results/reports/report.html', 'a') as file:
@@ -42,18 +42,20 @@ def create_report_file():
         
 
 
-def write_to_report(data: list, tname: str):
+def write_to_report(data):
     print(f'DATA TO REPORT {data}')
-    temp = {'name': tname,
-    'status': data[1],
-    'default': data[2],
-    'screen': f'../img/{tname}.png'}
-    report_dicts.append(temp)
-    print(temp)
+
+    # {'installer_logo.png': 'No', 'btn_screen.png': 'No', 'btn_continue.png': 'No', 'warn': 'No', 'result': 'Not Passed'}
+    # temp = {'name': tname,
+    # 'status': data['status'],
+    # 'default': data[2],
+    # 'screen': f'../img/{tname}.png'}
+    report_dicts.append(data)
+    # print(temp)
     print(f'Global report dicts {report_dicts}')
-    with open('results/reports/report.html', 'a') as file:
-        file.write(f'<tr><td>{tname}</td><td>{data[1]}</td><td>{data[2]}</td><td><img src="../img/{tname}.png" width="400" height="325"></td></tr>\n')
-        # file.write(f'{str(data)}')
+    # with open('results/reports/report.html', 'a') as file:
+    #     file.write(f'<tr><td>{tname}</td><td>{data[1]}</td><td>{data[2]}</td><td><img src="../img/{tname}.png" width="400" height="325"></td></tr>\n')
+    #     # file.write(f'{str(data)}')
 
 
 def report_finaliztion():

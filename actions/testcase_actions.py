@@ -13,7 +13,10 @@ def goto_next_screen(tabs: int):
 
 
 def fill_field(elem, text):
-    pyautogui.click(x=(int(elem.left) + 100), y=(int(elem.top) + 100), button='left')
+    # time.sleep(2)
+    pyautogui.moveTo(x=(int(elem.left) + 40), y=(int(elem.top) + 40))
+    pyautogui.click(button='left')
+    time.sleep(2)
     pyautogui.write(text)
     time.sleep(1)
 
@@ -31,11 +34,13 @@ def fill_many(elem, text):
 def locate_element(element_src: str):
     result = {'sname': element_src.split('/')[-1],
               'slink': element_src,
-              'state': ''}
+              'state': '',
+              'obj':''}
     try:
         element = pyautogui.locateOnScreen(element_src)
         # return element
         result['state'] = 'Found'
+        result['obj'] = element   # added to get pos of element
     except pyautogui.ImageNotFoundException:
         result['state'] = 'No'
         # return False
@@ -45,18 +50,18 @@ def locate_element(element_src: str):
 
 
 
-def locate_default_elements():
-    def_elems = []
-    def_elems.append(locate_element('reference_img/elems/installer_logo.png'))
-    def_elems.append(locate_element('reference_img/elems/btn_screen.png'))
-    def_elems.append(locate_element('reference_img/elems/btn_continue.png'))
-    print(def_elems)
+# def locate_default_elements():
+#     def_elems = []
+#     def_elems.append(locate_element('reference_img/elems/installer_logo.png'))
+#     def_elems.append(locate_element('reference_img/elems/btn_screen.png'))
+#     def_elems.append(locate_element('reference_img/elems/btn_continue.png'))
+#     print(def_elems)
 
-    if 'No' not in def_elems:
-        # return True
-        return 'found'
-    else: 
-        return False
+#     if 'No' not in def_elems:
+#         # return True
+#         return 'found'
+#     else: 
+#         return False
     
 
 async def test_screen(r_image: str, sc_name):
@@ -89,7 +94,7 @@ async def finder(r_image: str):
     while flag:
         try:
             start_menu = pyautogui.locateOnScreen(r_image) # 'reference_img/start_menu.png'
-            print(start_menu)
+            # print(start_menu)
             flag = False
             return start_menu
         except pyautogui.ImageNotFoundException:
@@ -97,19 +102,31 @@ async def finder(r_image: str):
 
 
 
-def case_result(elems, flag, test):
-    print(f'CASE RESULT DATA {elems}----{flag}-----{test}')
-    # [{'sname': 'installer_logo.png', 'slink': 'reference_img/elems/installer_logo.png', 'state': 'No'}, 
-    #  {'sname': 'btn_screen.png', 'slink': 'reference_img/elems/btn_screen.png', 'state': 'No'},
-    #   {'sname': 'btn_continue.png', 'slink': 'reference_img/elems/btn_continue.png', 'state': 'No'}]
-    # {'sname': 'warning.png', 'slink': 'reference_img/elems/warning.png', 'state': 'No'}
-    # Стартовый_экран  -----test
-    data = dict()
-    for item in elems:
 
-        data.update({item['sname']: item['state']})
-        
-        return 
+
+
+def case_result(elems, flag, testn):
+    # print(f'CASE RESULT DATA {elems}')
+    testcase = dict()
+    testcase.update({'testcase_name': testn, 
+                     'warn' : [flag['state'], flag['slink']],
+                      'screen': f'../img/{testn}.png',
+                      'searches': elems,
+                      'result': 'Passed'
+                        })
+
+    for item in elems:
+        # print(item)
+        if item['state'] == 'No':
+            print(item['sname'])
+            testcase.update({'result': 'Not Passed'})
+
+
+    if testcase['warn'][0] == 'Found':
+        testcase.update({'result': 'Blocked'})
+
+    # print(testcase)
+    return testcase
 
     # CASE RESULT DATA [False, 'found']
 
